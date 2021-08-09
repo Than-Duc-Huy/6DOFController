@@ -17,14 +17,21 @@ void setup(){
 }
 
 void loop(){
+	
 	for(int i = 0;i<4;i++){
-		SerialBT.print(toggle[i]BTBT
+		SerialBT.print(toggle[i]);
 		SerialBT.print(',');
+		toggle[i] = !toggle[i];
+	}
 	for(int i = 0;i<12;i++){
 		SerialBT.print(encval[i/6][i%6]);
 		if (i != 11) SerialBT.print(',');
+		if (encval[0][5] > 360) encval[0][5] = 0;
+		else if (encval[0][5] < 0) encval[0][5] = 0;
+		else encval[0][5] = encval[0][5] + 1;
 	}
 	SerialBT.println();
+	delay(10);
 }
 
 

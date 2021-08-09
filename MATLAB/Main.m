@@ -1,4 +1,4 @@
-A = serialport("COM9",115200);
+A = serialport("COM15",115200);
 configureTerminator(A,"CR/LF");
 flush(A);
 
