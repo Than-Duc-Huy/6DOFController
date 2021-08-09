@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include <Arduino.h>
 #include <AS5600.h>
-#include <Encoder.h>
+// #include <Encoder.h>
 //==================== I2C Multiplexor ========================
 //===== Select the pathway
 void Tcaselect(uint8_t i, uint8_t muxaddr) { // Select a path way
@@ -102,7 +102,7 @@ double ReadMux(uint8_t select, uint8_t muxaddr, String mode){
 
 //===== Quadrature Encoder
 double ReadQuadEnc(int A, int B){
-	Encoder Enc(A,B);
-	return Enc.read();
-
+	// Encoder Enc(A,B);
+	// return Enc.read();
+	return 0;
 }
