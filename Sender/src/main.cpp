@@ -26,6 +26,24 @@ void loop(){
 	}
 	SerialBT.println();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // void setup() {
 // 	pinMode(buttonpin[0],INPUT_PULLUP);
 // 	pinMode(buttonpin[1],INPUT_PULLUP);
