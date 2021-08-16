@@ -1,5 +1,5 @@
 disp("Running");
-A = serialport("COM9",115200);
+A = serialport("COM15",921600);
 configureTerminator(A,"CR/LF");
 flush(A);
 
@@ -8,18 +8,19 @@ button = zeros(1,4); % Button Values
 encval = zeros(1,12); % Encoder Values
 receive = zeros(1,16);
 % Main Loop
-while(true)
-    if (readline(A) == "Start")
-        disp("Looping");
-        break
-    end
-end
+% while(true)
+%     if (readline(A) == "Start")
+%         disp("Looping");
+%         break
+%     end
+% end
 pause(1)
 f = figure('Name',"TR");
 
 while(true)
     data = readline(A);
     newdata = split(data,',');
+    disp(data)
     if (size(newdata,1) == 16)
         for i = 1:16
             receive(i) = double(newdata(i));
