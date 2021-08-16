@@ -1,6 +1,8 @@
 #include <Wire.h>
 #include <Arduino.h>
 #include <AS5600.h>
+#include <ESp32Encoder.h>
+
 // #include <Encoder.h>
 //==================== I2C Multiplexor ========================
 //===== Select the pathway
@@ -101,8 +103,4 @@ double ReadMux(uint8_t select, uint8_t muxaddr, String mode){
 
 
 //===== Quadrature Encoder
-double ReadQuadEnc(int A, int B){
-	// Encoder Enc(A,B);
-	// return Enc.read();
-	return 0;
-}
+

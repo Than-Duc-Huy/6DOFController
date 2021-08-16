@@ -1,6 +1,7 @@
 //========================== CONSTANTS
 
-#define I2CMux 0x70
+#define I2CMuxR 0x70
+#define I2CMuxL 0x71
 #define DebounceDelay 50
 // Pins
 
@@ -16,7 +17,7 @@
 
 //========================== VARIABLES
 double encval[2][6] = {{0,0,0,0,0,0},{0,0,0,0,0,0}}; // 0 is left, 1 is right; 0->5 Starting from the Base
-double encsign[2][6] = {{0,0,0,0,1,0},{0,0,0,0,0,0}}; // 1 is correct direction
+double encsign[2][6] = {{0,0,0,0,0,0},{1,1,1,1,0,0}}; // 1 is correct direction
 double raw[2][6] = {{0,0,0,0,0,0},{0,0,0,0,0,0}};
 double zero[2][6] = {{0,0,0,0,0,0},{0,0,0,0,0,0}};
 const int buttonpin[4] = {4,5,18,19}; // LL LR RL RR
