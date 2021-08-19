@@ -73,15 +73,15 @@ print(OR)
 
 
 
-pyplot.add(OL)
-pyplot.add(OR)
-pyplot.ax.view_init(26,-63) #Elevation, Azimuth
-pyplot.ax.set_xlim3d(-0.3,0.3)
-pyplot.ax.set_ylim3d(-0.3,0.3)
-pyplot.ax.set_zlim3d(-0.3,0.3)
+# pyplot.add(OL)
+# pyplot.add(OR)
+# pyplot.ax.view_init(26,-63) #Elevation, Azimuth
+# pyplot.ax.set_xlim3d(-0.3,0.3)
+# pyplot.ax.set_ylim3d(-0.3,0.3)
+# pyplot.ax.set_zlim3d(-0.3,0.3)
 
 
-pyplot.step()
-pyplot.hold()
+# pyplot.step()
+# pyplot.hold()
 
 
