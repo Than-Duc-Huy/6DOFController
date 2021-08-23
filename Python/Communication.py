@@ -11,55 +11,73 @@ print(ESP32)
 time.sleep(1)
 ESP32.flushInput()
 
-# Ard = serial.Serial('')
-# print(Ard.name)
-# print(Ard.is_open)
-# print(Ard)
-# time.sleep(1)
-# Ard.flushOutput()
+Ard = serial.Serial('COM9')
+print(Ard.name)
+print(Ard.is_open)
+print(Ard)
+time.sleep(1)
+Ard.flushOutput()
 
 # Visualization
 
-pyplot.add(CL)
-pyplot.add(CR)
-# pyplot.add(OL)
-# pyplot.add(OR)
 
 pyplot.ax.view_init(26, -63)  # Elevation, Azimuth
-pyplot.ax.set_xlim3d(-0.3, 0.3)
-pyplot.ax.set_ylim3d(-0.3, 0.3)
-pyplot.ax.set_zlim3d(-0.3, 0.3)
 
+# pyplot.add(OL)
+# pyplot.add(OR)
+# pyplot.ax.set_xlim3d(-0.3, 0.3)
+# pyplot.ax.set_ylim3d(-0.3, 0.3)
+# pyplot.ax.set_zlim3d(-0.3, 0.3)
+
+
+pyplot.add(CL)
+pyplot.add(CR)
+pyplot.ax.set_xlim3d(-2, 2)
+pyplot.ax.set_ylim3d(-2, 2)
+pyplot.ax.set_zlim3d(-2, 2)
 
 while(True):
-    try:
-        incoming_data = ESP32.readline()
-        decoded = incoming_data.decode().strip('\r\n')
+    start = time.perf_counter()
+    incoming_data = ESP32.readline()
+    decoded = incoming_data.decode().strip('\r\n')
 
-        print(decoded)
-        parsed = [float(val) for val in decoded.split(',')]
+    parseSTR = decoded.split(",")
+    print(decoded)
+    # if len(decoded.split())
+    if(len(parseSTR) != 16):
+        continue
+    else:
+        try:
+            parsed = [float(val) for val in parseSTR]
+        except:
+            parsed = prevparsed
         parsed = np.array(parsed) * (2*np.pi) / 4096.0
         CL.q = parsed[4:10]
         CR.q = parsed[10:16]
-        JointL = OL.ikine_LM(CL.fkine(CL.q))
-        JointR = OR.ikine_LM(CR.fkine(CR.q))
+        JointL = OL.ikine_LM(CL.fkine(CL.q), [1, 1, 1, 0, 0, 0])
+        JointR = OR.ikine_LM(CR.fkine(CR.q), [1, 1, 1, 0, 0, 0])
 
         # Sending
-        # for i in range(4): # Toggle
-        # 	Ard.write(bytes(parsed[i],'ascii'))
-        # 	Ard.write(b',')
-        # for i in range(6):
-        # 	Ard.write(bytes(JointL.q[i],'ascii'))
-        # 	Ard.write(b',')
-        # for i in range(6):
-        # 	Ard.write(bytes(JointR.q[i],'ascii'))
-        # 	Ard.write(b',')
+        for i in range(4):  # Toggle
+            Ard.write(bytes(str(parsed[i]), 'ascii'))
+            Ard.write(b',')
+        for i in range(6):
+            Ard.write(bytes(str(JointL.q[i]), 'ascii'))
+            Ard.write(b',')
+        for i in range(6):
+            Ard.write(bytes(str(JointR.q[i]), 'ascii'))
+            if (i == 6):
+                continue
+            else:
+                Ard.write(b',')
+        Ard.write(b'\n')
+        OL.q = JointL.q
+        OR.q = JointR.q
+        # pyplot.step()
+        prevparsed = parsed
 
-        # OL.q = JointL.q
-        # OR.q = JointR.q
-        pyplot.step()
-    except:
-        continue
-    finally:
-        ESP32.flushInput()
-        # Ard.flushOutput()
+    ESP32.flushInput()
+    time.sleep(0.001)
+    done = time.perfcounter()
+    print(f"Loop: {done-start}s")
+    # Ard.flushOutput()
