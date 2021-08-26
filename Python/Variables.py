@@ -12,7 +12,7 @@ CL = [2.0, 0.6, 0.3, 1.9, 1.05]
 # Output
 OL = [0.5, 0.6, 0.75, 0.5, 0.5]
 OB = 0.5
-
+ScalingFactor = 0.5
 
 # Standard Denavitt Hartenberg notation
 DHparam = np.zeros((4, 7, 4))

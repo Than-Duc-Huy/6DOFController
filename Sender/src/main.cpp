@@ -147,4 +147,5 @@ void loop()
 	}
 	Serial.println();
 	SerialBT.println();
+	delay(10);
 }
