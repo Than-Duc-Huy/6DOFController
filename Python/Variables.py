@@ -10,9 +10,9 @@ n90 = -np.pi/2
 # Controller
 CL = [2.0, 0.6, 0.3, 1.9, 1.05]
 # Output
-OL = [0.5, 0.6, 0.75, 0.5, 0.5]
+OL = [0.5, 0.65, 0.75, 0.5, 0.75]
 OB = 0.5
-ScalingFactor = 0.5
+ScalingFactor = 0.25
 
 # Standard Denavitt Hartenberg notation
 DHparam = np.zeros((4, 7, 4))
@@ -43,7 +43,7 @@ DHparam[2][0] = [0, 0, 0, 0]
 DHparam[2][1] = [0, OL[0], 0, p90]
 DHparam[2][2] = [p90, 0, OL[1], 0]
 DHparam[2][3] = [0, 0, OL[2], p90]
-DHparam[2][4] = [0, OL[3], 0, p90]
+DHparam[2][4] = [0, OL[3], 0, n90]
 DHparam[2][5] = [0, 0, 0, p90]
 DHparam[2][6] = [p90, OL[4], 0, 0]
 
@@ -52,7 +52,7 @@ DHparam[3][0] = [0, 0, 0, 0]
 DHparam[3][1] = [0, OL[0], 0, p90]
 DHparam[3][2] = [p90, 0, OL[1], 0]
 DHparam[3][3] = [0, 0, OL[2], p90]
-DHparam[3][4] = [0, OL[3], 0, p90]
+DHparam[3][4] = [0, OL[3], 0, n90]
 DHparam[3][5] = [0, 0, 0, p90]
 DHparam[3][6] = [p90, OL[4], 0, 0]
 

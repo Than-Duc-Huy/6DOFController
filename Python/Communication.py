@@ -10,23 +10,32 @@ def inversekine(Controller, Output):
     Output.q = (Output.ikine_LM(Controller.fkine(Controller.q), q0=Output.q)).q
 
 
+# =================== Variables
+first = 1
+FTDI = False
+
 # ==================================== Serial Initialize
-ESP32 = serial.Serial('COM15')
+ESP32 = serial.Serial('COM5')
 print(ESP32.name)
 print(ESP32.is_open)
 print(ESP32)
 time.sleep(1)
 ESP32.flushInput()
+try:
+    Ard = serial.Serial('COM17', 115200)
+    print(Ard.name)
+    print(Ard.is_open)
+    print(Ard)
+    time.sleep(1)
+    Ard.flushOutput()
+    FTDI = True
+except:
+    print("No FTDI")
 
-# Ard = serial.Serial('COM9')
-# print(Ard.name)
-# print(Ard.is_open)
-# print(Ard)
-# time.sleep(1)
-# Ard.flushOutput()
+
 # ===============================================================VISUALIZATION
 
-pyplot.ax.view_init(0, -90)  # Elevation, Azimuth
+pyplot.ax.view_init(90, -0)  # Elevation, Azimuth
 
 pyplot.add(OL)
 pyplot.add(OR)
@@ -70,6 +79,8 @@ while(True):
 
         # ============================= REFERENCE TOGGLE
         if parsed[3] == 1:  # If the toggle is on
+            if (first == 1):
+                first = 0
             # Change input reference
             TLref = PLmeasured.t
             TRref = PRmeasured.t
@@ -90,23 +101,25 @@ while(True):
             PRreconstruct = SE3(ORref.t + ORdelta)*SE3(SO3(PRmeasured.R))
 
             # Inverse Kinematics to find joints
-            OR.q = (OR.ikine_LM(PRreconstruct, q0=OR.q)).q
-            OL.q = (OL.ikine_LM(PLreconstruct, q0=OL.q)).q
+            if (first == 0):
+                OR.q = (OR.ikine_LM(PRreconstruct, q0=OR.q)).q
+                OL.q = (OL.ikine_LM(PLreconstruct, q0=OL.q)).q
 
-        # Sending
-        # for i in range(4):  # Toggle
-        #     Ard.write(bytes(str(parsed[i]), 'ascii'))
-        #     Ard.write(b',')
-        # for i in range(6):
-        #     Ard.write(bytes(str(JointL.q[i]), 'ascii'))
-        #     Ard.write(b',')
-        # for i in range(6):
-        #     Ard.write(bytes(str(JointR.q[i]), 'ascii'))
-        #     if (i == 6):
-        #         continue
-        #     else:
-        #         Ard.write(b',')
-        # Ard.write(b'\n')
+            # # Sending
+            if (FTDI == True):
+                for i in range(4):  # Toggle
+                    Ard.write(bytes(str(parsed[i]), 'ascii'))
+                    Ard.write(b',')
+                for i in range(6):
+                    Ard.write(bytes(str(OL.q[i]*180/np.pi), 'ascii'))
+                    Ard.write(b',')
+                for i in range(6):
+                    Ard.write(bytes(str(OR.q[i]*180/np.pi), 'ascii'))
+                    if (i == 6):
+                        continue
+                    else:
+                        Ard.write(b',')
+                Ard.write(b'\n')
 
         # ============================== Troubleshooting
         # count += 1

@@ -10,10 +10,12 @@ import numpy as np
 
 
 pyplot = rtb.backends.PyPlot.PyPlot()
+
 pyplot.launch()
 
 # PREPARE THE VARIABLES
-
+outputmin = -150*np.pi/180
+outputmax = +150*np.pi/180
 
 # Controller
 # Left
@@ -60,17 +62,17 @@ print(CR)
 # Output
 # Left
 OL1 = rtb.robot.RevoluteDH(offset=DHparam[2][1][0], d=DHparam[2][1]
-                           [1], a=DHparam[2][1][2], alpha=DHparam[2][1][3], qlim=[0, p360])
+                           [1], a=DHparam[2][1][2], alpha=DHparam[2][1][3], qlim=[outputmin, outputmax])
 OL2 = rtb.robot.RevoluteDH(offset=DHparam[2][2][0], d=DHparam[2][2]
-                           [1], a=DHparam[2][2][2], alpha=DHparam[2][2][3], qlim=[0, p360])
+                           [1], a=DHparam[2][2][2], alpha=DHparam[2][2][3], qlim=[outputmin, outputmax])
 OL3 = rtb.robot.RevoluteDH(offset=DHparam[2][3][0], d=DHparam[2][3]
-                           [1], a=DHparam[2][3][2], alpha=DHparam[2][3][3], qlim=[0, p360])
+                           [1], a=DHparam[2][3][2], alpha=DHparam[2][3][3], qlim=[outputmin, outputmax])
 OL4 = rtb.robot.RevoluteDH(offset=DHparam[2][4][0], d=DHparam[2][4]
-                           [1], a=DHparam[2][4][2], alpha=DHparam[2][4][3], qlim=[0, p360])
+                           [1], a=DHparam[2][4][2], alpha=DHparam[2][4][3], qlim=[outputmin, outputmax])
 OL5 = rtb.robot.RevoluteDH(offset=DHparam[2][5][0], d=DHparam[2][5]
-                           [1], a=DHparam[2][5][2], alpha=DHparam[2][5][3], qlim=[0, p360])
+                           [1], a=DHparam[2][5][2], alpha=DHparam[2][5][3], qlim=[outputmin, outputmax])
 OL6 = rtb.robot.RevoluteDH(offset=DHparam[2][6][0], d=DHparam[2][6]
-                           [1], a=DHparam[2][6][2], alpha=DHparam[2][6][3], qlim=[0, p360])
+                           [1], a=DHparam[2][6][2], alpha=DHparam[2][6][3], qlim=[outputmin, outputmax])
 
 OLB = SE3(0, 0, 0.5)*SE3(-OB, 0, 0)*SE3.Rz(p90)
 OLT = SE3(0, 0, 0)*SE3.RPY([0, 0, 0], order='xyz')
@@ -81,17 +83,17 @@ print(OL)
 
 # Right
 OR1 = rtb.robot.RevoluteDH(offset=DHparam[3][1][0], d=DHparam[3][1]
-                           [1], a=DHparam[3][1][2], alpha=DHparam[3][1][3], qlim=[0, p360])
+                           [1], a=DHparam[3][1][2], alpha=DHparam[3][1][3], qlim=[outputmin, outputmax])
 OR2 = rtb.robot.RevoluteDH(offset=DHparam[3][2][0], d=DHparam[3][2]
-                           [1], a=DHparam[3][2][2], alpha=DHparam[3][2][3], qlim=[0, p360])
+                           [1], a=DHparam[3][2][2], alpha=DHparam[3][2][3], qlim=[outputmin, outputmax])
 OR3 = rtb.robot.RevoluteDH(offset=DHparam[3][3][0], d=DHparam[3][3]
-                           [1], a=DHparam[3][3][2], alpha=DHparam[3][3][3], qlim=[0, p360])
+                           [1], a=DHparam[3][3][2], alpha=DHparam[3][3][3], qlim=[outputmin, outputmax])
 OR4 = rtb.robot.RevoluteDH(offset=DHparam[3][4][0], d=DHparam[3][4]
-                           [1], a=DHparam[3][4][2], alpha=DHparam[3][4][3], qlim=[0, p360])
+                           [1], a=DHparam[3][4][2], alpha=DHparam[3][4][3], qlim=[outputmin, outputmax])
 OR5 = rtb.robot.RevoluteDH(offset=DHparam[3][5][0], d=DHparam[3][5]
-                           [1], a=DHparam[3][5][2], alpha=DHparam[3][5][3], qlim=[0, p360])
+                           [1], a=DHparam[3][5][2], alpha=DHparam[3][5][3], qlim=[outputmin, outputmax])
 OR6 = rtb.robot.RevoluteDH(offset=DHparam[3][6][0], d=DHparam[3][6]
-                           [1], a=DHparam[3][6][2], alpha=DHparam[3][6][3], qlim=[0, p360])
+                           [1], a=DHparam[3][6][2], alpha=DHparam[3][6][3], qlim=[outputmin, outputmax])
 
 ORB = SE3(0, 0, 0.5)*SE3(OB, 0, 0)*SE3.Rz(p90)
 ORT = SE3(0, 0, 0)*SE3.RPY([0, 0, 0], order='xyz')

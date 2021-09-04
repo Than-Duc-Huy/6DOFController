@@ -3,6 +3,21 @@
 #include <stdlib.h>
 #include <BluetoothSerial.h>
 #include <ESP32Encoder.h>
+#include "soc/soc.h"
+#include "soc/rtc_cntl_reg.h"
+#include <SimpleKalmanFilter.h>
+
+SimpleKalmanFilter L1(1, 1, 0.01);
+SimpleKalmanFilter L2(1, 1, 0.01);
+SimpleKalmanFilter L3(1, 1, 0.01);
+SimpleKalmanFilter L4(1, 1, 0.01);
+SimpleKalmanFilter L5(1, 1, 0.01);
+
+SimpleKalmanFilter R1(1, 1, 0.01);
+SimpleKalmanFilter R2(1, 1, 0.01);
+SimpleKalmanFilter R3(1, 1, 0.01);
+SimpleKalmanFilter R4(1, 1, 0.01);
+SimpleKalmanFilter R5(1, 1, 0.01);
 
 ESP32Encoder CL0;
 ESP32Encoder CR0;
@@ -37,8 +52,9 @@ BluetoothSerial SerialBT;
 
 void setup()
 {
+	WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
 
-	SerialBT.begin("ESP32test"); // Name
+	SerialBT.begin("ESP32test Not Dead"); // Name
 	Serial.println("Started");
 
 	pinMode(buttonpin[0], INPUT_PULLUP);
@@ -55,15 +71,6 @@ void setup()
 	CL0.clearCount();
 	CR0.attachHalfQuad(34, 35);
 	CR0.clearCount();
-
-	pinMode(LED_BUILTIN, OUTPUT);
-	for (int i = 0; i < 10; i++)
-	{
-		digitalWrite(LED_BUILTIN, 1);
-		delay(100);
-		digitalWrite(LED_BUILTIN, 0);
-		delay(100);
-	}
 }
 
 void loop()
@@ -100,11 +107,16 @@ void loop()
 	// raw[0][2] = ReadMux(5,I2CMuxL,"");
 	// raw[0][1] = ReadMux(6,I2CMuxL,"");
 
-	raw[1][5] = ReadMux(2, I2CMuxR, "");
-	raw[1][4] = ReadMux(3, I2CMuxR, "");
-	raw[1][3] = ReadMux(4, I2CMuxR, "");
-	raw[1][2] = ReadMux(5, I2CMuxR, "");
-	raw[1][1] = ReadMux(6, I2CMuxR, "");
+	raw[1][5] = L5.updateEstimate(ReadMux(2, I2CMuxR, ""));
+	Serial.print("5");
+	raw[1][4] = L4.updateEstimate(ReadMux(3, I2CMuxR, ""));
+	Serial.print("4");
+	raw[1][3] = L3.updateEstimate(ReadMux(4, I2CMuxR, ""));
+	Serial.print("3");
+	raw[1][2] = L2.updateEstimate(ReadMux(5, I2CMuxR, ""));
+	Serial.print("2");
+	raw[1][1] = L1.updateEstimate(ReadMux(6, I2CMuxR, ""));
+	Serial.print("1");
 
 	// ===== Read Quadrature Encoder
 	raw[0][0] = CL0.getCount();
